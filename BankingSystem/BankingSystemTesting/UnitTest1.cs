@@ -12,14 +12,16 @@ namespace BankingSystemTesting
         public void DepositShouldIncreaseBalance()
         {
             //Arrange
-            BankAccount bankAccount = new BankAccount(123);
+            int id = 123;
+            decimal amount = 500;
+            BankAccount bankAccount = new BankAccount(id,amount);
             decimal amountDeposit = 100;
 
             //Act
             bankAccount.Deposit(amountDeposit);
 
             //Assert
-            Assert.AreEqual(amountDeposit, bankAccount.Balance);
+            Assert.AreEqual(amountDeposit+amount, bankAccount.Balance);
         }
         [Test]
         public void AccountInicializeWithPositiveValue()
@@ -70,8 +72,43 @@ namespace BankingSystemTesting
             Assert.AreEqual(0, id, account.Id);
 
         }
-       
-      
+
+        [TestCase(123,500)]
+        [TestCase(123, 7896)]
+        [TestCase(123, 0)]
+        public void ConstructorShouldSetBalanceCorrecty(int id , decimal amount)
+        {
+            //Arrange&Act
+            BankAccount bankAccount = new BankAccount(id, amount);
+            
+            //Assert
+            Assert.AreEqual(amount , bankAccount.Balance);
+        }
+        [Test]
+        public void  BalanceShouldThrowArgumentExeptionWhenBalanceIsNegative()
+        {
+            //Arrange
+            int id = 123;
+            decimal amount = -100.123m;
+            string message = "Negative amount";
+
+            //Act&
+            var ex = Assert.Throws<ArgumentException>(() => new BankAccount(id, amount));
+            //Assert
+            Assert.AreEqual(message ,ex.Message);
+
+
+           
+
+            
+        }
+
+
+
+
+
+
+
 
 
     }
